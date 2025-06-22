@@ -1,24 +1,90 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+interface GoogleSheet {
+  properties?: {
+    title?: string;
+  };
+}
 
 function App() {
+  const [tabs, setTabs] = useState<Map<string, string[]>>(new Map());
+  const [year, setYear] = useState<string>('');
+  const [tab, setTab] = useState<string>('');
+  const [data, setData] = useState<string[][]>([]);
+
+  function generateTabs(sheets: GoogleSheet[]) {
+    let map = new Map();
+
+    sheets?.forEach((sheet) => {
+      let title = sheet.properties?.title;
+
+      let splitTitle = title?.split(" ");
+      let year = splitTitle?.shift();
+      let tab = splitTitle?.join(" ");
+      if(!map.has(year)) {
+        map.set(year, []);
+      }
+      map.get(year).push(tab)
+    });
+
+    setTabs(map);
+    let firstEntry = map.entries().next().value;
+    setYear(firstEntry?.[0]);
+    setTab(firstEntry?.[1]);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(`http://localhost:4000/api/sheet/`);
+      generateTabs(res.data.sheets);
+    }
+    fetchData();
+    
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      if(year && tab) {
+        if(!tabs.get(year)?.includes(tab)) {
+          let newTabList = tabs.get(year)!;
+          setTab(newTabList[0]);
+        } else {
+          const res = await axios.get(`http://localhost:4000/api/sheet/${year}/${tab}`);
+          setData(res.data);
+        }
+      }
+    }
+    fetchData();
+  }, [year, tab, tabs]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Google Sheet Viewer</h1>
+      <div>
+        <select value={year} onChange={(event) => setYear(event.target.value)}>
+          {[...tabs.keys()].map((year, i) => (
+            <option key={i} value={year}>{year}</option>
+          ))}
+        </select>
+
+        <select value={tab} onChange={(event) => setTab(event.target.value)}>
+          {tabs.get(year)?.map((tab, i) => (
+            <option key={i} value={tab}>{tab}</option>
+          ))}
+        </select>
+      </div>
+      <table border={1}>
+        <tbody>
+          {data ? data.map((row, i) => (
+            <tr key={i}>
+              {row.map((cell, j) => <td key={j}>{cell}</td>)}
+            </tr>
+          )) : null}
+        </tbody>
+      </table>
+      <div>
+      </div>
     </div>
   );
 }
