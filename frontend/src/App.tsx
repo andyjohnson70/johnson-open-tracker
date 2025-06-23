@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface GoogleSheet {
@@ -59,9 +59,12 @@ function App() {
   }, [year, tab, tabs]);
 
   return (
-    <div>
-      <h1>Google Sheet Viewer</h1>
-      <div>
+    <div className='flex-col'>
+      <div className='bg-black bg-cover min-h-fit w-full'>
+        <div className='text-white text-xl font-bold p-5'>The Johnson Open</div>
+      </div>
+      
+      <div className='w-full flex text-center'>
         <select value={year} onChange={(event) => setYear(event.target.value)}>
           {[...tabs.keys()].map((year, i) => (
             <option key={i} value={year}>{year}</option>
@@ -74,16 +77,26 @@ function App() {
           ))}
         </select>
       </div>
-      <table border={1}>
-        <tbody>
-          {data ? data.map((row, i) => (
-            <tr key={i}>
-              {row.map((cell, j) => <td key={j}>{cell}</td>)}
-            </tr>
-          )) : null}
-        </tbody>
-      </table>
       <div>
+        {/* {
+          switch(tab) {
+            case "": 
+
+              break;
+            case "": 
+
+              break;
+            case "": 
+
+              break;
+            default: 
+
+              break;
+          }
+        } */}
+      </div>
+      <div>
+
       </div>
     </div>
   );
