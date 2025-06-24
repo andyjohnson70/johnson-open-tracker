@@ -7,7 +7,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const RANGES = new Map([
     ["Tee Sheet", "A:D"],
     ["Scores", "A:W"],
-    ["LEADERBOARD", "A:K"],
+    ["LEADERBOARD", "E:H"],
 ]);
 const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!);
 

@@ -1,17 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, JSX } from 'react';
 import axios from 'axios';
+import courseMap from './img/course-map.png';
+import golfField from './img/golf-field.png';
+import golfClubs from './img/golf-clubs.png';
+import golf from './img/golf.png';
+import TeeSheet from './components/TeeSheet';
+import Leaderboards from './components/Leaderboards';
+import Scores from './components/Scores';
 
-interface GoogleSheet {
-  properties?: {
-    title?: string;
-  };
-}
-
-function App() {
+function App(this: any) {
   const [tabs, setTabs] = useState<Map<string, string[]>>(new Map());
   const [year, setYear] = useState<string>('');
   const [tab, setTab] = useState<string>('');
   const [data, setData] = useState<string[][]>([]);
+
+  function renderSwitch(tab: string): JSX.Element {
+    switch(tab) {
+      case "Tee Sheet": 
+        return <TeeSheet data={data}/>
+      case "Scores": 
+        return <Scores data={data} />
+      case "LEADERBOARD": 
+        return <Leaderboards data={data}/>
+      default: 
+        return <div></div>
+    }
+  }
 
   function generateTabs(sheets: GoogleSheet[]) {
     let map = new Map();
@@ -59,45 +73,70 @@ function App() {
   }, [year, tab, tabs]);
 
   return (
-    <div className='flex-col'>
-      <div className='bg-black bg-cover min-h-fit w-full'>
-        <div className='text-white text-xl font-bold p-5'>The Johnson Open</div>
+    <div className='flex-col flex h-screen'>
+      <div className='bg-dark-blue min-h-fit w-full'>
+        <div className='flex place-content-center space-x-3 text-2xl text-white font-bold m-3'>
+          <img width={30} height={30} src={golf} alt='Golf Icon'/>
+          <div className='text-white font-bold'>The Johnson Open</div>
+          <img width={30} height={30} src={golf} alt='Golf Icon'/>
+        </div>
+      </div>
+
+      <div className='flex flex-1 overflow-hidden'>
+        <div className='inline-flex flex-col max-w-[300px]'>
+          <div className="w-fit max-h-[calc(100vh-4rem-40px)] overflow-hidden">
+            <img className='h-full object-cover' src={courseMap} alt="Swinomish Golf Links Course Map" />
+          </div>
+          <table className='max-w-[300px]'>
+              <thead className='[&>*]:divide-x [&>*]:divide-solid'>
+                <tr className='[&>*]:font-bold [&>*]:text-sm [&>*]:text-dark-blue'>
+                  <th>Par 71</th>
+                  <th>Yards</th>
+                  <th>Rating</th>
+                  <th>Slope</th>
+                </tr>
+              </thead>
+              <tbody className='[&>*]:divide-x [&>*]:divide-solid'>
+                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center'>
+                  <td>Back</td>
+                  <td>6,177</td>
+                  <td>67.8</td>
+                  <td>110</td>
+                </tr>
+                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center'>
+                  <td>Front</td>
+                  <td>5,609</td>
+                  <td>65.2</td>
+                  <td>105</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+        <div className='flex-grow'>
+          <div className='w-full flex [&>select]:m-2 [&>select]:p-1 [&>select]:border-dark-blue [&>select]:border-2  [&>select]:bg-white [&>select]:rounded-md  [&>select]:text-black'>
+            <select value={year} onChange={(event) => setYear(event.target.value)}>
+              {[...tabs.keys()].map((year, i) => (
+                <option key={i} value={year}>{year}</option>
+              ))}
+            </select>
+
+            <select value={tab} onChange={(event) => setTab(event.target.value)}>
+              {tabs.get(year)?.map((tab, i) => (
+                <option key={i} value={tab}>{tab}</option>
+              ))}
+            </select>
+          </div>
+          <div className='flex mx-2 p-3 border-2 border-dark-blue max-h-[calc(100vh-4rem-50px)] overflow-y-scroll rounded-xl shadow-xl'>
+            {
+              renderSwitch(tab)
+            }
+          </div>
+        </div>
+
       </div>
       
-      <div className='w-full flex text-center'>
-        <select value={year} onChange={(event) => setYear(event.target.value)}>
-          {[...tabs.keys()].map((year, i) => (
-            <option key={i} value={year}>{year}</option>
-          ))}
-        </select>
-
-        <select value={tab} onChange={(event) => setTab(event.target.value)}>
-          {tabs.get(year)?.map((tab, i) => (
-            <option key={i} value={tab}>{tab}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        {/* {
-          switch(tab) {
-            case "": 
-
-              break;
-            case "": 
-
-              break;
-            case "": 
-
-              break;
-            default: 
-
-              break;
-          }
-        } */}
-      </div>
-      <div>
-
-      </div>
+      
     </div>
   );
 }
