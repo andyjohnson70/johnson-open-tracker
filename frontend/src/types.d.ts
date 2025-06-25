@@ -6,5 +6,6 @@ interface GoogleSheet {
 
 interface TableProps {
     data: string[][];
+    isPending: boolean
 }
 

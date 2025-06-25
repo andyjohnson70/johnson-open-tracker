@@ -1,8 +1,6 @@
-import { useState, useEffect, JSX } from 'react';
+import { useState, useEffect, JSX, useTransition } from 'react';
 import axios from 'axios';
 import courseMap from './img/course-map.png';
-import golfField from './img/golf-field.png';
-import golfClubs from './img/golf-clubs.png';
 import golf from './img/golf.png';
 import TeeSheet from './components/TeeSheet';
 import Leaderboards from './components/Leaderboards';
@@ -12,16 +10,18 @@ function App(this: any) {
   const [tabs, setTabs] = useState<Map<string, string[]>>(new Map());
   const [year, setYear] = useState<string>('');
   const [tab, setTab] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>('');
   const [data, setData] = useState<string[][]>([]);
+  const [isPending, startTransition] = useTransition();
 
   function renderSwitch(tab: string): JSX.Element {
     switch(tab) {
       case "Tee Sheet": 
-        return <TeeSheet data={data}/>
+        return <TeeSheet data={data} isPending={isPending} />
       case "Scores": 
-        return <Scores data={data} />
+        return <Scores data={data} isPending={isPending} />
       case "LEADERBOARD": 
-        return <Leaderboards data={data}/>
+        return <Leaderboards data={data} isPending={isPending} />
       default: 
         return <div></div>
     }
@@ -41,7 +41,6 @@ function App(this: any) {
       }
       map.get(year).push(tab)
     });
-
     setTabs(map);
     let firstEntry = map.entries().next().value;
     setYear(firstEntry?.[0]);
@@ -51,7 +50,7 @@ function App(this: any) {
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get(`http://localhost:4000/api/sheet/`);
-      generateTabs(res.data.sheets);
+      startTransition(async () => await generateTabs(res.data.sheets));
     }
     fetchData();
     
@@ -65,7 +64,10 @@ function App(this: any) {
           setTab(newTabList[0]);
         } else {
           const res = await axios.get(`http://localhost:4000/api/sheet/${year}/${tab}`);
-          setData(res.data);
+          startTransition(async () => {
+            await setData(res.data);
+            setActiveTab(tab);
+          });
         }
       }
     }
@@ -127,9 +129,9 @@ function App(this: any) {
               ))}
             </select>
           </div>
-          <div className='flex mx-2 p-3 border-2 border-dark-blue max-h-[calc(100vh-4rem-50px)] overflow-y-scroll rounded-xl shadow-xl'>
+          <div className='flex mx-2 border-2 border-dark-blue h-[calc(100vh-4rem-50px)] overflow-y-auto rounded-xl shadow-xl'>
             {
-              renderSwitch(tab)
+              renderSwitch(activeTab)
             }
           </div>
         </div>
