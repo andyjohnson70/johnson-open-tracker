@@ -85,11 +85,11 @@ function App(this: any) {
       </div>
 
       <div className='flex flex-1 overflow-hidden'>
-        <div className='inline-flex flex-col max-w-[300px]'>
+        <div className='md:inline-flex md:flex-col md:max-w-[300px] lg:max-w-fit hidden'>
           <div className="w-fit max-h-[calc(100vh-4rem-40px)] overflow-hidden">
             <img className='h-full object-cover' src={courseMap} alt="Swinomish Golf Links Course Map" />
           </div>
-          <table className='max-w-[300px]'>
+          <table className='md:max-w-[300px] lg:max-w-full'>
               <thead className='[&>*]:divide-x [&>*]:divide-solid'>
                 <tr className='[&>*]:font-bold [&>*]:text-sm [&>*]:text-dark-blue'>
                   <th>Par 71</th>

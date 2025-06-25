@@ -4,7 +4,7 @@ function TeeSheet({ data, isPending } : TableProps) {
     let header = data[0];
     let values = data.slice(1).filter(item => item.length > 0);
     return (
-      <table>
+      <table className="border-separate border-spacing-0 w-full md:w-auto">
         <thead className='[&>*]:divide-x [&>*]:divide-solid [&>*]:ring sticky top-0 [&>*]:bg-white z-10'>
           <tr className='[&>td]:font-bold [&>td]:text-lg [&>td]:text-dark-blue [&>td]:p-2'>
             {header?.map((value, i) => <td className="" key={i}>{value}</td>)}

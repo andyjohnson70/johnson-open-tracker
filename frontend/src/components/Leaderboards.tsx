@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-
 function Leaderboards({ data, isPending } : TableProps) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [rollingIndex, setRollingIndex] = useState<number | null>(null);
