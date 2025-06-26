@@ -9,3 +9,6 @@ interface TableProps {
     isPending: boolean
 }
 
+interface ConfettiProps {
+    direction: string;
+}

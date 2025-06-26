@@ -84,14 +84,14 @@ function App(this: any) {
         </div>
       </div>
 
-      <div className='flex flex-1 overflow-hidden'>
-        <div className='md:inline-flex md:flex-col md:max-w-[300px] lg:max-w-fit hidden'>
+      <div className='md:flex md:flex-1 overflow-hidden'>
+        <div className='md:inline-flex md:flex-col max-w-[300px] 2xl:max-w-fit hidden'>
           <div className="w-fit max-h-[calc(100vh-4rem-40px)] overflow-hidden">
             <img className='h-full object-cover' src={courseMap} alt="Swinomish Golf Links Course Map" />
           </div>
-          <table className='md:max-w-[300px] lg:max-w-full'>
+          <table className='max-w-[300px] 2xl:max-w-full'>
               <thead className='[&>*]:divide-x [&>*]:divide-solid'>
-                <tr className='[&>*]:font-bold [&>*]:text-sm [&>*]:text-dark-blue'>
+                <tr className='[&>*]:font-bold [&>*]:text-sm [&>*]:text-dark-blue [&>*]:2xl:text-2xl'>
                   <th>Par 71</th>
                   <th>Yards</th>
                   <th>Rating</th>
@@ -99,13 +99,13 @@ function App(this: any) {
                 </tr>
               </thead>
               <tbody className='[&>*]:divide-x [&>*]:divide-solid'>
-                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center'>
+                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center [&>td]:2xl:text-2xl'>
                   <td>Back</td>
                   <td>6,177</td>
                   <td>67.8</td>
                   <td>110</td>
                 </tr>
-                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center'>
+                <tr className='[&>*]:font-100 [&>*]:text-xs [&>*]:text-center [&>td]:2xl:text-2xl'>
                   <td>Front</td>
                   <td>5,609</td>
                   <td>65.2</td>
@@ -116,7 +116,7 @@ function App(this: any) {
         </div>
 
         <div className='flex-grow'>
-          <div className='w-full flex [&>select]:m-2 [&>select]:p-1 [&>select]:border-dark-blue [&>select]:border-2  [&>select]:bg-white [&>select]:rounded-md  [&>select]:text-black'>
+          <div className='w-full flex [&>select]:m-2 [&>select]:p-1 [&>select]:2xl:p-3 [&>select]:2xl:text-xl [&>select]:border-dark-blue [&>select]:border-2 [&>select]:bg-white [&>select]:rounded-md [&>select]:text-black'>
             <select value={year} onChange={(event) => setYear(event.target.value)}>
               {[...tabs.keys()].map((year, i) => (
                 <option key={i} value={year}>{year}</option>
@@ -129,7 +129,7 @@ function App(this: any) {
               ))}
             </select>
           </div>
-          <div className='flex mx-2 border-2 border-dark-blue h-[calc(100vh-4rem-50px)] overflow-y-auto rounded-xl shadow-xl'>
+          <div className='flex max-w-screen mx-2 border-2 border-dark-blue h-[calc(100vh-4rem-50px)] 2xl:h-[calc(100vh-4rem-70px)] overflow-auto rounded-xl shadow-xl'>
             {
               renderSwitch(activeTab)
             }
