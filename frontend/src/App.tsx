@@ -6,6 +6,8 @@ import TeeSheet from './components/TeeSheet';
 import Leaderboards from './components/Leaderboards';
 import Scores from './components/Scores';
 
+const API_URL = "http://johnson-open-tracker-api.azurewebsites.net";
+
 function App(this: any) {
   const [tabs, setTabs] = useState<Map<string, string[]>>(new Map());
   const [year, setYear] = useState<string>('');
@@ -49,7 +51,7 @@ function App(this: any) {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`http://localhost:4000/api/sheet/`);
+      const res = await axios.get(`${API_URL}/api/sheet/`);
       startTransition(async () => await generateTabs(res.data.sheets));
     }
     fetchData();
@@ -63,7 +65,7 @@ function App(this: any) {
           let newTabList = tabs.get(year)!;
           setTab(newTabList[0]);
         } else {
-          const res = await axios.get(`http://localhost:4000/api/sheet/${year}/${tab}`);
+          const res = await axios.get(`${API_URL}/api/sheet/${year}/${tab}`);
           startTransition(async () => {
             await setData(res.data);
             setActiveTab(tab);
