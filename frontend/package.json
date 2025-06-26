@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:css": "tailwindcss -i ./src/index.css -o ./build/output.css --minify",
+    "build:css": "tailwindcss -i ./src/index.css -o ./src/output.css --minify",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
