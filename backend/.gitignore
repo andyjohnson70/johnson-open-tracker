@@ -9,6 +9,8 @@
 /coverage
 
 # production
+.azure
+/dist
 /build
 
 # misc

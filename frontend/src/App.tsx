@@ -6,7 +6,7 @@ import TeeSheet from './components/TeeSheet';
 import Leaderboards from './components/Leaderboards';
 import Scores from './components/Scores';
 
-const API_URL = "http://johnson-open-tracker-api.azurewebsites.net";
+const API_URL = "https://johnson-open-tracker-api.azurewebsites.net";
 
 function App(this: any) {
   const [tabs, setTabs] = useState<Map<string, string[]>>(new Map());
