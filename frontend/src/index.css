@@ -8,11 +8,6 @@
   --color-dark-blue: #01306e;
   --color-light-green: #aacf69;
   --color-green: #5d7537;
-  --breakpoint-*: initial;
-  --breakpoint-sm: 22.5rem;
-  --breakpoint-md: 30rem;
-  --breakpoint-lg: 48rem;
-  --breakpoint-xl: 80rem;
 }
 
 body {
